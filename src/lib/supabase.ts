@@ -1,7 +1,7 @@
 import {
   createClient,
-  RealtimePostgresChangesPayload,
   RealtimeChannel,
+  RealtimePostgresChangesPayload,
 } from "@supabase/supabase-js";
 import { Database } from "../../database.types";
 import { Note } from "@/modules/notes/note.entity";

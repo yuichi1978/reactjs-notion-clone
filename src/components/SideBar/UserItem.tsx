@@ -32,7 +32,7 @@ const UserItem: FC<Props> = ({ user, signout }) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-80"
+        className="w-80 bg-white"
         align="start"
         alignOffset={11}
         forceMount

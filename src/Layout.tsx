@@ -6,7 +6,7 @@ import { useCurrentUserStore } from "@/modules/auth/current-user.state";
 import { useNoteStore } from "@/modules/notes/note.state";
 import { noteRepository } from "@/modules/notes/note.repository";
 import { Note } from "./modules/notes/note.entity";
-import { subscribe } from "./lib/supabase";
+import { subscribe, unsubscribe } from "./lib/supabase";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -19,14 +19,21 @@ const Layout = () => {
   useEffect(() => {
     fetchNotes();
     const channel = subscribeNote();
+    return () => {
+      unsubscribe(channel!);
+    }
   }, []);
 
   const subscribeNote = () => {
     if (currentUser == null) return;
     return subscribe(currentUser!.id, (payload) => {
-      console.log(payload)
-    })
-  }
+      if (payload.eventType === "INSERT" || payload.eventType === "UPDATE") {
+        noteStore.set([payload.new]);
+      } else if (payload.eventType === "DELETE") {
+        noteStore.delete(payload.old.id!);
+      }
+    });
+  };
 
   const fetchNotes = async () => {
     setIsLoading(true);
@@ -47,7 +54,7 @@ const Layout = () => {
   const moveToDetail = (noteId: number) => {
     navigate(`/notes/${noteId}`);
     setIsShowModal(false);
-  }
+  };
 
   if (currentUser == null) return <Navigate replace to="/signin" />;
 

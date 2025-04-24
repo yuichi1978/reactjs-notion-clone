@@ -61,7 +61,7 @@ export function NoteItem({
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-60"
+          className="w-60 bg-white"
           align="start"
           side="right"
           forceMount
@@ -95,7 +95,7 @@ export function NoteItem({
         icon={getIcon()}
         onIconClick={onExpand}
         trailingItem={menu}
-        isActive={isHovered}
+        isActive={isHovered || isSelected}
       />
     </div>
   );

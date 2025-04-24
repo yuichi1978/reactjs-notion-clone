@@ -33,12 +33,17 @@ export const authRepository = {
     const { data, error } = await supabase.auth.getSession();
 
     if (error != null) throw new Error(error.message);
-
     if (data.session == null) return;
 
     return {
       ...data.session.user,
       useName: data.session.user.user_metadata,
-    }
+    };
+  },
+
+  async signout() {
+    const { error } = await supabase.auth.signOut();
+    if (error != null) throw new Error(error.message);
+    return true;
   },
 };
